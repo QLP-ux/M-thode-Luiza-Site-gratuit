@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Méthode Luiza — Début Gratuit 🇧🇷</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   DESIGN SYSTEM — Tropical Cosmos
+   ============================================= */
+:root {
+  --bg:        #05050d;
+  --surface:   #08081a;
+  --card:      #0d0d22;
+  --card2:     #121230;
+  --gold:      #F5B427;
+  --gold-glow: rgba(245,180,39,0.18);
+  --gold-dim:  rgba(245,180,39,0.1);
+  --green:     #00D66B;
+  --green-dim: rgba(0,214,107,0.1);
+  --coral:     #FF5E5E;
+  --teal:      #38C8C8;
+  --text:      #eeeeff;
+  --muted:     rgba(238,238,255,0.5);
+  --border:    rgba(255,255,255,0.07);
+  --border-hi: rgba(255,255,255,0.14);
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}
+button{font-family:'Nunito',sans-serif;cursor:pointer}
+img{max-width:100%}
+
+/* =============================================
+   CANVAS BG
+   ============================================= */
+#stars-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* =============================================
+   PROGRESS BAR
+   ============================================= */
+#prog{position:fixed;top:0;left:0;height:3px;z-index:9999;width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--green),var(--teal));
+  transition:width .08s linear;border-radius:0 2px 2px 0}
+
+/* =============================================
+   NAV
+   ============================================= */
+nav{
+  position:fixed;top:3px;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 2rem;
+  background:rgba(5,5,13,.75);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;
+  background:linear-gradient(135deg,var(--gold),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:-.01em;
+}
+.nav-cta{
+  background:linear-gradient(135deg,var(--gold),#e8960d);
+  color:#000;border:none;padding:.5rem 1.3rem;border-radius:50px;
+  font-weight:700;font-size:.82rem;letter-spacing:.02em;
+  transition:transform .2s,box-shadow .2s;display:inline-block;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,180,39,.45)}
+
+/* =============================================
+   SECTIONS BASE
+   ============================================= */
+section{position:relative;z-index:1}
+.wrapper{max-width:1080px;margin:0 auto;padding:5rem 1.5rem}
+
+.s-label{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);background:var(--gold-dim);
+  border:1px solid rgba(245,180,39,.25);
+  border-radius:4px;padding:.25rem .75rem;margin-bottom:1rem;
+}
+.s-label.gr{color:var(--green);background:var(--green-dim);border-color:rgba(0,214,107,.25)}
+.s-label.tl{color:var(--teal);background:rgba(56,200,200,.08);border-color:rgba(56,200,200,.25)}
+
+.s-title{
+  font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4.5vw,3rem);
+  font-weight:800;line-height:1.15;margin-bottom:.9rem;
+}
+.s-sub{color:var(--muted);font-size:1.05rem;max-width:580px;line-height:1.75;margin-bottom:2.5rem}
+.tc{text-align:center}
+.tc .s-sub{margin-left:auto;margin-right:auto}
+
+/* =============================================
+   REVEAL ANIMATIONS
+   ============================================= */
+.rev{opacity:0;transform:translateY(38px);transition:opacity .7s ease,transform .7s ease}
+.rev.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* =============================================
+   HERO
+   ============================================= */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;padding:7rem 1.5rem 5rem;
+}
+
+/* Floating shapes (HeroGeometric inspired) */
+.shapes{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.shape{
+  position:absolute;border-radius:999px;
+  border:1.5px solid rgba(255,255,255,.1);
+}
+.shape::after{
+  content:'';position:absolute;inset:0;border-radius:999px;
+  background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.13),transparent 65%);
+}
+.sh1{width:560px;height:130px;top:20%;left:-8%;transform:rotate(12deg);
+  background:linear-gradient(90deg,rgba(245,180,39,.14),transparent);
+  animation:fsh1 14s ease-in-out infinite}
+.sh2{width:420px;height:105px;top:72%;right:-5%;transform:rotate(-15deg);
+  background:linear-gradient(90deg,rgba(0,214,107,.11),transparent);
+  animation:fsh2 12s ease-in-out infinite}
+.sh3{width:260px;height:68px;bottom:8%;left:6%;transform:rotate(-8deg);
+  background:linear-gradient(90deg,rgba(56,200,200,.12),transparent);
+  animation:fsh3 17s ease-in-out infinite}
+.sh4{width:190px;height:52px;top:11%;right:18%;transform:rotate(20deg);
+  background:linear-gradient(90deg,rgba(155,100,230,.12),transparent);
+  animation:fsh4 10s ease-in-out infinite}
+.sh5{width:130px;height:36px;top:5%;left:26%;transform:rotate(-26deg);
+  background:linear-gradient(90deg,rgba(255,94,94,.1),transparent);
+  animation:fsh1 19s ease-in-out infinite reverse}
+.sh6{width:340px;height:85px;top:45%;right:3%;transform:rotate(8deg);
+  background:linear-gradient(90deg,rgba(245,180,39,.08),transparent);
+  animation:fsh2 22s ease-in-out infinite}
+
+@keyframes fsh1{0%,100%{transform:rotate(12deg) translateY(0)}50%{transform:rotate(12deg) translateY(18px)}}
+@keyframes fsh2{0%,100%{transform:rotate(-15deg) translateY(0)}50%{transform:rotate(-15deg) translateY(-14px)}}
+@keyframes fsh3{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(-8deg) translateY(12px)}}
+@keyframes fsh4{0%,100%{transform:rotate(20deg) translateY(0)}50%{transform:rotate(20deg) translateY(-20px)}}
+
+/* Mesh glow behind hero text */
+.hero-glow{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:700px;height:700px;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(245,180,39,.04) 0%,rgba(0,214,107,.03) 40%,transparent 70%);
+  filter:blur(40px);
+}
+
+.hero-inner{position:relative;z-index:2;max-width:820px;margin:0 auto}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.38rem 1rem;border-radius:50px;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);
+  font-size:.78rem;color:var(--muted);letter-spacing:.08em;
+  margin-bottom:2rem;
+  animation:fadeUp .9s ease .1s both;
+}
+.bdot{width:7px;height:7px;border-radius:50%;background:var(--coral);animation:bdot 2s ease-in-out infinite}
+@keyframes bdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+
+.hero h1{
+  font-family:'Syne',sans-serif;font-size:clamp(2.4rem,7vw,5.2rem);
+  font-weight:800;line-height:1.08;margin-bottom:1.4rem;
+  animation:fadeUp .9s ease .3s both;
+}
+.h1-line1{display:block;background:linear-gradient(to bottom,#fff,rgba(255,255,255,.78));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h1-line2{display:block;
+  background:linear-gradient(135deg,var(--gold) 0%,#fff 48%,var(--green) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+.hero-sub{
+  font-size:clamp(.95rem,2.4vw,1.2rem);color:var(--muted);font-weight:300;
+  max-width:500px;margin:0 auto 2.5rem;
+  animation:fadeUp .9s ease .5s both;
+}
+
+.hero-btns{
+  display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp .9s ease .7s both;
+}
+.btn-p{
+  background:linear-gradient(135deg,var(--gold),#e8960d);color:#000;
+  border:none;padding:.85rem 1.9rem;border-radius:50px;
+  font-weight:800;font-size:.95rem;letter-spacing:.02em;
+  display:inline-flex;align-items:center;gap:.45rem;
+  transition:all .3s;
+}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(245,180,39,.5)}
+.btn-s{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border-hi);padding:.85rem 1.9rem;border-radius:50px;
+  font-weight:600;font-size:.95rem;
+  display:inline-flex;align-items:center;gap:.45rem;
+  transition:all .3s;
+}
+.btn-s:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.28);transform:translateY(-2px)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+.scroll-ind{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  color:var(--muted);font-size:.7rem;letter-spacing:.12em;
+  animation:fadeUp .9s ease 1.1s both;
+}
+.scroll-mouse{
+  width:22px;height:36px;border:2px solid rgba(255,255,255,.18);border-radius:11px;position:relative;
+}
+.scroll-mouse::after{
+  content:'';position:absolute;top:5px;left:50%;transform:translateX(-50%);
+  width:3px;height:7px;background:var(--gold);border-radius:2px;
+  animation:scrollDot 1.8s ease-in-out infinite;
+}
+@keyframes scrollDot{0%,100%{top:5px;opacity:1}60%{top:18px;opacity:0}}
+
+/* =============================================
+   STATS BAR
+   ============================================= */
+.stats-bar{
+  background:var(--surface);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:2.5rem 1.5rem;
+}
+.stats-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center}
+.stat-n{
+  font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;
+  background:linear-gradient(135deg,var(--gold),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;
+}
+.stat-l{color:var(--muted);font-size:.88rem;margin-top:.35rem}
+
+/* =============================================
+   CARDS / WHY
+   ============================================= */
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.3rem;margin-top:2.5rem}
+.why-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.8rem;position:relative;overflow:hidden;transition:all .3s;
+}
+.why-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--green));
+  opacity:0;transition:opacity .3s;
+}
+.why-card:hover{border-color:rgba(245,180,39,.2);transform:translateY(-5px);box-shadow:0 22px 55px rgba(0,0,0,.45)}
+.why-card:hover::before{opacity:1}
+.wi{font-size:2.2rem;margin-bottom:.9rem;display:block}
+.why-card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.4rem}
+.why-card p{color:var(--muted);font-size:.88rem;line-height:1.65}
+
+/* =============================================
+   METHOD COMPARISON
+   ============================================= */
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:2.5rem}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:2.2rem}
+.mc.bad{border-color:rgba(255,94,94,.18)}
+.mc.good{border-color:rgba(0,214,107,.18);background:linear-gradient(145deg,var(--card),rgba(0,214,107,.04))}
+.mc-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem}
+.mc-list{list-style:none;display:flex;flex-direction:column;gap:.75rem}
+.mc-list li{display:flex;align-items:center;gap:.7rem;font-size:.93rem}
+.mc-list.bad li{color:var(--muted)}
+.mc-list.good li{color:var(--text)}
+.mc-ico{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.mc-list.bad .mc-ico{background:rgba(255,94,94,.12)}
+.mc-list.good .mc-ico{background:rgba(0,214,107,.12)}
+
+/* =============================================
+   TESTIMONIALS
+   ============================================= */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.3rem;margin-top:2.5rem}
+.tc-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:1.6rem;position:relative;transition:all .3s;
+}
+.tc-card::before{
+  content:'"';position:absolute;top:-.3rem;left:1.3rem;
+  font-family:'Syne',sans-serif;font-size:3.5rem;color:var(--gold);opacity:.25;line-height:1;
+}
+.tc-card:hover{border-color:rgba(245,180,39,.2);transform:translateY(-4px);box-shadow:0 16px 42px rgba(0,0,0,.4)}
+.stars{color:var(--gold);font-size:.85rem;margin-bottom:.8rem}
+.tc-text{font-style:italic;color:var(--text);line-height:1.7;margin-bottom:1rem;font-size:.93rem}
+.tc-auth{font-weight:700;color:var(--muted);font-size:.82rem}
+
+/* =============================================
+   ORBITAL NAVIGATOR (RadialOrbitalTimeline inspired)
+   ============================================= */
+.orbital-bg{background:var(--surface)}
+.orb-wrap{
+  position:relative;height:480px;display:flex;align-items:center;justify-content:center;
+  margin-top:2rem;
+}
+.orb-ring{
+  position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.07);
+  pointer-events:none;
+}
+.orb-ring-1{width:370px;height:370px}
+.orb-ring-2{width:460px;height:460px;border-style:dashed;border-color:rgba(255,255,255,.04)}
+.orb-ring-3{width:240px;height:240px;border-color:rgba(245,180,39,.06)}
+
+.orb-center{
+  position:absolute;z-index:10;width:72px;height:72px;
+}
+.orb-inner{
+  width:100%;height:100%;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--green));
+  display:flex;align-items:center;justify-content:center;font-size:1.9rem;
+  box-shadow:0 0 48px rgba(245,180,39,.45),0 0 96px rgba(245,180,39,.15);
+  animation:spinSlow 25s linear infinite;
+}
+.orb-center::before{
+  content:'';position:absolute;inset:-12px;border-radius:50%;
+  border:1.5px solid rgba(245,180,39,.3);animation:pRing 3s ease-in-out infinite;
+}
+.orb-center::after{
+  content:'';position:absolute;inset:-24px;border-radius:50%;
+  border:1px solid rgba(245,180,39,.12);animation:pRing 3s ease-in-out infinite 1.2s;
+}
+@keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes pRing{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(1.12)}}
+
+/* Node container: full-size absolute, nodes positioned from its center */
+#orb-nodes{position:absolute;inset:0;pointer-events:none}
+
+.orb-node{
+  position:absolute;top:50%;left:50%;
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.35rem;
+  transition:opacity .4s,filter .3s;
+  pointer-events:all;
+}
+.orb-node-ico{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--card);border:2px solid var(--border-hi);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+  transition:all .3s;box-shadow:0 4px 16px rgba(0,0,0,.35);
+}
+.orb-node:hover .orb-node-ico{
+  border-color:var(--gold);background:rgba(245,180,39,.1);transform:scale(1.22);
+  box-shadow:0 0 24px rgba(245,180,39,.35);
+}
+.orb-node-lbl{
+  font-size:.62rem;font-weight:800;letter-spacing:.05em;color:var(--muted);
+  text-align:center;white-space:nowrap;transition:color .3s;
+  max-width:72px;line-height:1.2;
+}
+.orb-node:hover .orb-node-lbl{color:var(--gold)}
+.orb-hint{color:var(--muted);font-size:.82rem;text-align:center;margin-top:1rem}
+
+/* =============================================
+   LESSON SECTIONS
+   ============================================= */
+.lesson-sec{border-top:1px solid var(--border)}
+.lesson-alt{background:var(--surface)}
+
+/* SCROLL-CARD (ContainerScroll inspired) */
+.scroll-3d-wrap{
+  perspective:1200px;margin:2.5rem 0;
+}
+.scroll-3d-card{
+  background:var(--card);border:2px solid var(--border-hi);border-radius:var(--r-lg);
+  overflow:hidden;transition:transform .12s ease;
+  box-shadow:0 0 0 1px rgba(245,180,39,.04),0 40px 80px rgba(0,0,0,.5);
+  will-change:transform;
+}
+
+/* Lesson number chip */
+.lesson-chip{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--teal);background:rgba(56,200,200,.08);
+  border:1px solid rgba(56,200,200,.22);
+  border-radius:4px;padding:.25rem .75rem;margin-bottom:1rem;
+}
+
+/* CONJUGATION TABLE */
+.conj-tbl{width:100%;border-collapse:collapse;margin:1.8rem 0;border-radius:12px;overflow:hidden}
+.conj-tbl thead th{
+  background:rgba(245,180,39,.1);color:var(--gold);
+  font-family:'Syne',sans-serif;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.9rem 1.3rem;text-align:left;border-bottom:1px solid rgba(245,180,39,.18);
+}
+.conj-tbl tbody td{padding:.9rem 1.3rem;border-bottom:1px solid var(--border);font-size:.93rem}
+.conj-tbl tbody tr:last-child td{border-bottom:none}
+.conj-tbl tbody tr{background:var(--card);transition:background .18s}
+.conj-tbl tbody tr:hover{background:var(--card2)}
+.conj-tbl td:nth-child(2){color:var(--gold);font-weight:700}
+.conj-tbl td:nth-child(3){color:var(--muted)}
+
+/* SPLIT LAYOUT */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:1.8rem}
+.split-3{display:grid;grid-template-columns:1fr 1.25fr;gap:1.8rem;margin-top:1.8rem}
+
+/* EXAMPLE BOX */
+.ex-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);padding:1.4rem}
+.ex-box-title{
+  font-family:'Syne',sans-serif;font-size:.75rem;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;
+}
+.ex-item{padding:.55rem 0;border-bottom:1px solid var(--border)}
+.ex-item:last-child{border-bottom:none}
+.ex-pt{font-weight:700;color:var(--gold);font-size:.93rem}
+.ex-fr{color:var(--muted);font-size:.82rem;margin-top:.1rem}
+
+/* FLASHCARDS */
+.flash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.9rem;margin:1.4rem 0}
+.fc-wrap{height:110px;perspective:700px;cursor:pointer}
+.fc-inner{
+  width:100%;height:100%;position:relative;transform-style:preserve-3d;
+  transition:transform .5s cubic-bezier(.4,0,.2,1);
+}
+.fc-wrap.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-f,.fc-b{
+  position:absolute;inset:0;border-radius:var(--r-sm);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:.9rem;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+}
+.fc-f{background:var(--card);border:1px solid var(--border);color:var(--gold);font-weight:700;font-size:.95rem}
+.fc-b{
+  background:linear-gradient(135deg,rgba(0,214,107,.12),rgba(0,214,107,.05));
+  border:1px solid rgba(0,214,107,.22);color:var(--green);font-size:.88rem;
+  transform:rotateY(180deg);
+}
+.fc-hint{font-size:.6rem;color:var(--muted);margin-top:.35rem}
+
+/* EXERCISE BOX */
+.exo-box{
+  background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);
+  border-radius:0 var(--r-md) var(--r-md) 0;padding:1.4rem 1.8rem;margin-top:1.8rem;
+}
+.exo-title{
+  font-family:'Syne',sans-serif;font-size:.8rem;font-weight:800;
+  color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.8rem;
+}
+.exo-sub{font-size:.82rem;color:var(--muted);margin-bottom:1rem}
+.exo-items{display:flex;flex-direction:column;gap:.7rem}
+.exo-item{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:.75rem 1rem;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:all .2s;
+}
+.exo-item:hover{border-color:rgba(245,180,39,.3);background:rgba(245,180,39,.04)}
+.exo-q{font-size:.9rem}
+.exo-a{display:none;color:var(--green);font-weight:700;font-size:.9rem}
+.exo-btn{font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:.25rem;flex-shrink:0;margin-left:.8rem}
+
+/* INFO / WARNING BOXES */
+.info-box,.warn-box,.hi-box{
+  border-radius:var(--r-sm);padding:1.1rem 1.4rem;
+  margin:1.4rem 0;display:flex;gap:.75rem;align-items:flex-start;
+}
+.info-box{background:rgba(56,200,200,.07);border:1px solid rgba(56,200,200,.18)}
+.info-box .bi{color:var(--teal);font-size:1.1rem;flex-shrink:0;margin-top:.1rem}
+.info-box p{font-size:.88rem;line-height:1.7;color:var(--text)}
+.info-box strong{color:var(--teal)}
+
+.warn-box{background:rgba(255,94,94,.07);border:1px solid rgba(255,94,94,.18)}
+.warn-box .bi{color:var(--coral);font-size:1.1rem;flex-shrink:0}
+.warn-box p{font-size:.88rem;line-height:1.7}
+.warn-box strong{color:var(--coral)}
+
+.hi-box{background:var(--gold-dim);border:1px solid rgba(245,180,39,.22)}
+.hi-box .bi{font-size:1.1rem;flex-shrink:0;margin-top:.1rem}
+.hi-box p{font-size:.88rem;line-height:1.7}
+.hi-box strong{color:var(--gold)}
+
+/* DIALOGUE BUBBLES */
+.dial-wrap{display:flex;flex-direction:column;gap:.9rem;margin-top:1.8rem}
+.brow{display:flex;gap:.9rem;align-items:flex-end}
+.brow.r{flex-direction:row-reverse}
+.bav{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--card2);border:2px solid var(--border-hi);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;
+}
+.bub{
+  max-width:68%;background:var(--card);border:1px solid var(--border);
+  border-radius:18px;border-bottom-left-radius:4px;
+  padding:.9rem 1.1rem;
+  opacity:0;transform:translateY(12px);
+  transition:opacity .45s ease,transform .45s ease;
+}
+.brow.r .bub{
+  border-radius:18px;border-bottom-right-radius:4px;
+  background:linear-gradient(135deg,rgba(245,180,39,.07),rgba(245,180,39,.02));
+  border-color:rgba(245,180,39,.14);
+}
+.bub.vis{opacity:1;transform:translateY(0)}
+.bub-pt{font-weight:700;font-size:.9rem;color:var(--gold);margin-bottom:.15rem}
+.bub-fr{font-size:.78rem;color:var(--muted)}
+
+/* VOCAB GRID */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;margin-top:1.4rem}
+.vc{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:.9rem 1rem;text-align:center;transition:all .2s;
+}
+.vc:hover{border-color:rgba(245,180,39,.3);transform:translateY(-2px)}
+.vc-pt{font-weight:700;color:var(--gold);font-size:.88rem;margin-bottom:.25rem}
+.vc-fr{color:var(--muted);font-size:.78rem}
+
+/* PRONOM EXAMPLES */
+.pex{
+  background:var(--card);border:1px solid var(--border);
+  border-left:3px solid var(--teal);border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:.9rem 1.1rem;margin-bottom:.7rem;
+}
+.pex-pt{font-weight:700;color:var(--teal);margin-bottom:.12rem;font-size:.92rem}
+.pex-fr{color:var(--muted);font-size:.82rem}
+
+/* EM NA NO TABLE */
+.emna-tbl{width:100%;border-collapse:collapse;margin:1.5rem 0;border-radius:12px;overflow:hidden}
+.emna-tbl thead th{
+  background:rgba(56,200,200,.1);color:var(--teal);
+  font-family:'Syne',sans-serif;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.8rem 1.2rem;text-align:left;border-bottom:1px solid rgba(56,200,200,.18);
+}
+.emna-tbl tbody td{padding:.8rem 1.2rem;border-bottom:1px solid var(--border);font-size:.9rem}
+.emna-tbl tbody tr:last-child td{border-bottom:none}
+.emna-tbl tbody tr{background:var(--card);transition:background .18s}
+.emna-tbl tbody tr:hover{background:var(--card2)}
+.emna-tbl td:nth-child(2){color:var(--gold);font-weight:600}
+.emna-tbl td:nth-child(3){color:var(--teal);font-weight:700}
+
+/* FICAR GRID */
+.ficar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1rem;margin:1.5rem 0}
+.ficar-c{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:1.1rem;transition:all .3s;
+}
+.ficar-c:hover{border-color:rgba(0,214,107,.3);background:rgba(0,214,107,.04);transform:translateY(-3px)}
+.ficar-s{font-family:'Syne',sans-serif;font-weight:800;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--green);margin-bottom:.45rem}
+.ficar-pt{font-weight:700;color:var(--gold);font-size:.9rem;margin-bottom:.15rem}
+.ficar-fr{color:var(--muted);font-size:.82rem}
+
+/* BR VS PT */
+.bvsp{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:2rem}
+.bvsp-c{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.8rem;text-align:center;
+}
+.bvsp-c.br{border-color:rgba(0,214,107,.18)}
+.bvsp-c.pt{border-color:rgba(255,94,94,.18)}
+.bvsp-flag{font-size:2.8rem;margin-bottom:.8rem}
+.bvsp-lbl{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:.4rem}
+.bvsp-rule{font-size:.85rem;color:var(--muted);margin-bottom:1rem}
+.bvsp-ex{
+  background:rgba(245,180,39,.08);border-radius:var(--r-sm);
+  padding:.75rem;font-weight:700;color:var(--gold);font-size:.95rem;
+}
+
+/* FREQ GRID */
+.freq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:.9rem;margin:1.5rem 0}
+.freq-c{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:1.1rem;text-align:center;position:relative;overflow:hidden;transition:all .3s;
+}
+.freq-c::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--green))}
+.freq-c:hover{transform:translateY(-3px);border-color:rgba(245,180,39,.2)}
+.freq-pt{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--gold);margin-bottom:.25rem}
+.freq-fr{color:var(--muted);font-size:.82rem}
+
+/* =============================================
+   QUIZ
+   ============================================= */
+.quiz-bg{background:var(--surface)}
+.quiz-wrap{max-width:680px;margin:0 auto}
+.qprog-bar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-bottom:2rem}
+.qprog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--green));border-radius:2px;transition:width .5s ease;width:0}
+.q-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.8rem;display:none;animation:fadeUp .4s ease;
+}
+.q-card.act{display:block}
+.q-num{font-size:.72rem;font-weight:800;letter-spacing:.16em;color:var(--gold);text-transform:uppercase;margin-bottom:.7rem}
+.q-txt{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1.4rem;line-height:1.4}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.q-opt{
+  background:rgba(255,255,255,.025);border:2px solid var(--border);border-radius:var(--r-sm);
+  padding:.85rem 1rem;color:var(--text);font-size:.88rem;font-weight:600;
+  text-align:left;transition:all .2s;
+}
+.q-opt:hover:not(:disabled){border-color:var(--gold);background:rgba(245,180,39,.08)}
+.q-opt.ok{border-color:var(--green);background:rgba(0,214,107,.1);color:var(--green)}
+.q-opt.no{border-color:var(--coral);background:rgba(255,94,94,.1);color:var(--coral)}
+.q-fb{margin-top:.9rem;padding:.75rem 1rem;border-radius:var(--r-sm);font-size:.88rem;font-weight:600;display:none}
+.q-fb.ok-fb{background:rgba(0,214,107,.08);border:1px solid rgba(0,214,107,.2);color:var(--green);display:block}
+.q-fb.no-fb{background:rgba(255,94,94,.08);border:1px solid rgba(255,94,94,.2);color:var(--coral);display:block}
+
+/* SCORE */
+.score-wrap{text-align:center;padding:2.5rem;display:none}
+.score-wrap.vis{display:block}
+.score-n{
+  font-family:'Syne',sans-serif;font-size:5rem;font-weight:800;
+  background:linear-gradient(135deg,var(--gold),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;
+}
+.score-msg{font-size:1.05rem;color:var(--muted);margin:.8rem 0 2rem}
+
+/* =============================================
+   CTA FINAL
+   ============================================= */
+.cta-sec{
+  text-align:center;
+  background:linear-gradient(135deg,#05050d,#0a0a1e);position:relative;overflow:hidden;
+}
+.cta-glow{
+  position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(245,180,39,.06),transparent 65%);
+  filter:blur(30px);
+}
+.cta-inner{position:relative;z-index:1}
+.cta-features{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:1rem;max-width:700px;margin:0 auto 2.5rem;text-align:left;
+}
+.cta-feat{background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);padding:1.1rem 1.4rem}
+.cta-feat-ico{font-size:1.6rem;margin-bottom:.6rem;display:block}
+.cta-feat h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.cta-feat p{color:var(--muted);font-size:.82rem;line-height:1.6}
+.cta-big{
+  display:inline-flex;align-items:center;gap:.7rem;
+  background:linear-gradient(135deg,var(--gold),#e8960d);color:#000;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;
+  padding:1.1rem 2.8rem;border-radius:50px;border:none;cursor:pointer;
+  transition:all .3s;margin-top:1rem;
+  animation:glowPulse 3s ease-in-out infinite;
+}
+.cta-big:hover{transform:translateY(-4px) scale(1.03);animation:none;box-shadow:0 20px 50px rgba(245,180,39,.55)}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 30px rgba(245,180,39,.28)}50%{box-shadow:0 0 60px rgba(245,180,39,.55),0 0 100px rgba(245,180,39,.18)}}
+.cta-bullets{display:flex;justify-content:center;gap:1.8rem;flex-wrap:wrap;margin-top:1.8rem}
+.cta-bull{display:flex;align-items:center;gap:.4rem;color:var(--muted);font-size:.88rem}
+.cta-bull .ck{color:var(--green);font-weight:700}
+
+/* FOOTER */
+footer{
+  background:#030309;border-top:1px solid var(--border);
+  padding:2rem 1.5rem;text-align:center;color:var(--muted);font-size:.83rem;
+}
+footer strong{color:var(--gold)}
+footer a{color:var(--gold);transition:opacity .2s}
+footer a:hover{opacity:.7}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media(max-width:700px){
+  .method-grid,.split,.split-3,.bvsp,.q-opts,.stats-grid{grid-template-columns:1fr}
+  .orb-ring-1{width:280px;height:280px}
+  .orb-ring-2{width:350px;height:350px}
+  .orb-ring-3{width:180px;height:180px}
+  .orb-wrap{height:400px}
+  nav{padding:.75rem 1rem}
+  .wrapper{padding:4rem 1.1rem}
+}
+@media(max-width:480px){
+  .hero-btns{flex-direction:column;align-items:center}
+  .flash-grid{grid-template-columns:1fr 1fr}
+  .ficar-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Stars canvas -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- Progress bar -->
+<div id="prog"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🇧🇷 Méthode Luiza</div>
+  <a href="https://linktr.ee/methodeluiza" target="_blank" class="nav-cta">Formation complète →</a>
+</nav>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="shapes">
+    <div class="shape sh1"></div>
+    <div class="shape sh2"></div>
+    <div class="shape sh3"></div>
+    <div class="shape sh4"></div>
+    <div class="shape sh5"></div>
+    <div class="shape sh6"></div>
+  </div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="bdot"></div>
+      Guide gratuit · Par Luiza Silva, professeure de portugais
+    </div>
+
+    <h1>
+      <span class="h1-line1">Parler portugais</span>
+      <span class="h1-line2">en 1 mois. C'est possible.</span>
+    </h1>
+
+    <p class="hero-sub">Fini les cours ennuyeux comme à l'école — ici on va à l'essentiel et on pratique dès le départ.</p>
+
+    <div class="hero-btns">
+      <a href="#lecon-1" class="btn-p">🚀 Commencer maintenant</a>
+      <a href="#pourquoi" class="btn-s">Pourquoi le portugais ?</a>
+    </div>
+  </div>
+
+  <div class="scroll-ind">
+    <div class="scroll-mouse"></div>
+    DÉFILER
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div class="rev"><div class="stat-n" data-target="260">0</div><div class="stat-l">millions de locuteurs dans le monde 🌍</div></div>
+    <div class="rev d2"><div class="stat-n">15 min</div><div class="stat-l">par jour suffisent pour progresser ⏱️</div></div>
+    <div class="rev d3"><div class="stat-n">1 mois</div><div class="stat-l">pour tenir une vraie conversation 🗣️</div></div>
+  </div>
+</div>
+
+<!-- =============================================
+     POURQUOI
+     ============================================= -->
+<section id="pourquoi">
+  <div class="wrapper">
+    <div class="rev">
+      <span class="s-label">🌍 Pourquoi le portugais ?</span>
+      <h2 class="s-title">260 millions de personnes<br>t'attendent.</h2>
+      <p class="s-sub">Apprendre le portugais, c'est s'ouvrir à un monde immense — entre Europe, Amérique et cultures riches.</p>
+    </div>
+    <div class="grid-4">
+      <div class="why-card rev d1"><span class="wi">✈️</span><h3>Voyager sans limite</h3><p>Brésil, Portugal, Cap-Vert, Angola, Mozambique… Le portugais s'étend sur 3 continents.</p></div>
+      <div class="why-card rev d2"><span class="wi">🤝</span><h3>Nouvelles connexions</h3><p>Communique avec des millions de personnes. Le Brésil seul, c'est 215 millions de locuteurs.</p></div>
+      <div class="why-card rev d3"><span class="wi">🎵</span><h3>Culture riche</h3><p>Samba, bossa nova, fado, littérature lusophone… Un univers culturel à portée de main.</p></div>
+      <div class="why-card rev d4"><span class="wi">💼</span><h3>Atout professionnel</h3><p>Le Brésil est la 1ère économie d'Amérique du Sud — un atout clé pour ta carrière.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     LA MÉTHODE
+     ============================================= -->
+<section style="background:var(--surface)">
+  <div class="wrapper">
+    <div class="rev tc">
+      <span class="s-label">🏆 Notre méthode</span>
+      <h2 class="s-title">La méthode qui marche.<br>Vraiment.</h2>
+      <p class="s-sub">Luiza Silva enseigne le portugais depuis des années. Sa méthode : <strong>parler dès le premier cours</strong>, pas dans 6 mois.</p>
+    </div>
+    <div class="method-grid">
+      <div class="mc bad rev d1">
+        <div class="mc-title">😴 La méthode scolaire</div>
+        <ul class="mc-list bad">
+          <li><div class="mc-ico">❌</div>Tu apprends les règles par cœur</li>
+          <li><div class="mc-ico">❌</div>Tu traduis dans ta tête</li>
+          <li><div class="mc-ico">❌</div>Tu cherches la bonne conjugaison</li>
+          <li><div class="mc-ico">❌</div>Tu hésites à chaque phrase</li>
+          <li><div class="mc-ico">❌</div>Pas de fluidité, pas de naturel</li>
+        </ul>
+      </div>
+      <div class="mc good rev d2">
+        <div class="mc-title" style="color:var(--green)">🚀 La Méthode Luiza</div>
+        <ul class="mc-list good">
+          <li><div class="mc-ico">✅</div>Tu parles directement dès le départ</li>
+          <li><div class="mc-ico">✅</div>C'est naturel et fluide</li>
+          <li><div class="mc-ico">✅</div>Comme quand tu as appris le français</li>
+          <li><div class="mc-ico">✅</div>Des scénarios réels du quotidien</li>
+          <li><div class="mc-ico">✅</div>15 min par jour suffisent</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     TÉMOIGNAGES
+     ============================================= -->
+<section>
+  <div class="wrapper">
+    <div class="rev tc">
+      <span class="s-label gr">💬 Ils témoignent</span>
+      <h2 class="s-title">Ce que disent mes élèves ⭐</h2>
+      <p class="s-sub">Des vraies personnes, de vrais résultats. Tu pourrais être le prochain !</p>
+    </div>
+    <div class="testi-grid">
+      <div class="tc-card rev d1"><div class="stars">⭐⭐⭐⭐⭐</div><p class="tc-text">Les cours sont clairs et très bien structurés. Je recommande vivement !</p><div class="tc-auth">Thomas, Élève de Portugais</div></div>
+      <div class="tc-card rev d2"><div class="stars">⭐⭐⭐⭐⭐</div><p class="tc-text">Sa méthode basée sur des jeux aide beaucoup à mémoriser. On apprend sans s'en rendre compte !</p><div class="tc-auth">Alexandre, Élève de Portugais</div></div>
+      <div class="tc-card rev d3"><div class="stars">⭐⭐⭐⭐⭐</div><p class="tc-text">Merci pour les cours ! Ils m'aident énormément ! Je suis de plus en plus motivée à chaque leçon.</p><div class="tc-auth">Laura</div></div>
+      <div class="tc-card rev d4"><div class="stars">⭐⭐⭐⭐⭐</div><p class="tc-text">Caroline commence à faire des progrès significatifs grâce à Luiza !</p><div class="tc-auth">Fred</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     ORBITAL NAVIGATOR
+     ============================================= -->
+<section class="orbital-bg">
+  <div class="wrapper">
+    <div class="rev tc">
+      <span class="s-label tl">🗺️ Le programme</span>
+      <h2 class="s-title">10 modules pour tout maîtriser</h2>
+    </div>
+    <div class="orb-wrap">
+      <div class="orb-ring orb-ring-3"></div>
+      <div class="orb-ring orb-ring-1"></div>
+      <div class="orb-ring orb-ring-2"></div>
+      <div class="orb-center"><div class="orb-inner">🇧🇷</div></div>
+      <div id="orb-nodes"></div>
+    </div>
+    <p class="orb-hint rev">👆 Clique sur un module pour y accéder directement</p>
+  </div>
+</section>
+
+<!-- =============================================
+     LEÇON 1 — LE PRÉSENT
+     ============================================= -->
+<section class="lesson-sec" id="lecon-1">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip">📚 Leçon 1</span></div>
+    <div class="rev">
+      <h2 class="s-title">Le présent en portugais ⚡</h2>
+      <p class="s-sub">Le temps de base pour commencer à parler ! Utilise-le pour tes habitudes, la vie en général. Et bonne nouvelle…</p>
+    </div>
+    <div class="hi-box rev"><span class="bi">🎉</span><p><strong>Bonne nouvelle !</strong> La conjugaison au présent est régulière pour beaucoup de verbes — tu vas apprendre vite !</p></div>
+
+    <!-- Scroll 3D card for conjugation table -->
+    <div class="scroll-3d-wrap rev">
+      <div class="scroll-3d-card" data-scroll-3d>
+        <div style="padding:1.6rem">
+          <div class="ex-box-title" style="margin-bottom:.5rem">🔤 Conjugaison du verbe <span style="color:var(--gold)">falar</span> (parler)</div>
+          <table class="conj-tbl">
+            <thead><tr><th>Pronom</th><th>🇧🇷 Portugais</th><th>🇫🇷 Français</th></tr></thead>
+            <tbody>
+              <tr><td>1re pers. sing.</td><td>eu falo</td><td>je parle</td></tr>
+              <tr><td>2e pers. sing.</td><td>tu falas</td><td>tu parles</td></tr>
+              <tr><td>3e pers. sing.</td><td>ele / ela fala</td><td>il / elle parle</td></tr>
+              <tr><td>1re pers. plur.</td><td>nós falamos</td><td>nous parlons</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="split rev">
+      <div class="ex-box">
+        <div class="ex-box-title">👀 Exemples en situation réelle</div>
+        <div class="ex-item"><div class="ex-pt">Eu falo português. 🇧🇷</div><div class="ex-fr">→ Je parle portugais.</div></div>
+        <div class="ex-item"><div class="ex-pt">Eu falo francês. 🇫🇷</div><div class="ex-fr">→ Je parle français.</div></div>
+        <div class="ex-item"><div class="ex-pt">Nós falamos com o professor.</div><div class="ex-fr">→ Nous parlons avec le professeur.</div></div>
+        <div class="ex-item"><div class="ex-pt">Ele fala muito. 😄</div><div class="ex-fr">→ Il parle beaucoup.</div></div>
+      </div>
+      <div class="rev">
+        <div class="ex-box-title">🃏 Flashcards — clique pour retourner !</div>
+        <div class="flash-grid">
+          <div class="fc-wrap" onclick="this.classList.toggle('flipped')"><div class="fc-inner"><div class="fc-f">eu falo<div class="fc-hint">taper pour voir</div></div><div class="fc-b">je parle</div></div></div>
+          <div class="fc-wrap" onclick="this.classList.toggle('flipped')"><div class="fc-inner"><div class="fc-f">tu falas<div class="fc-hint">taper pour voir</div></div><div class="fc-b">tu parles</div></div></div>
+          <div class="fc-wrap" onclick="this.classList.toggle('flipped')"><div class="fc-inner"><div class="fc-f">ele fala<div class="fc-hint">taper pour voir</div></div><div class="fc-b">il parle</div></div></div>
+          <div class="fc-wrap" onclick="this.classList.toggle('flipped')"><div class="fc-inner"><div class="fc-f">nós falamos<div class="fc-hint">taper pour voir</div></div><div class="fc-b">nous parlons</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exo-box rev">
+      <div class="exo-title">🎯 À ton tour ! Traduis en portugais</div>
+      <div class="exo-sub">Clique sur chaque phrase pour révéler la réponse.</div>
+      <div class="exo-items">
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">Je parle portugais</span><span class="exo-a">→ Eu falo português.</span><span class="exo-btn">👁 Révéler</span></div>
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">Nous parlons avec Maria</span><span class="exo-a">→ Nós falamos com Maria.</span><span class="exo-btn">👁 Révéler</span></div>
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">Il parle français</span><span class="exo-a">→ Ele fala francês.</span><span class="exo-btn">👁 Révéler</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     LEÇON 2 — LA ROUTINE
+     ============================================= -->
+<section class="lesson-sec lesson-alt" id="lecon-2">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip">📚 Leçon 2</span></div>
+    <div class="rev">
+      <h2 class="s-title">Parler de ta routine ☀️🌙</h2>
+      <p class="s-sub">Décris ta journée en portugais — l'une des premières choses dont tu auras besoin dans une vraie conversation.</p>
+    </div>
+
+    <div class="split rev">
+      <div class="ex-box">
+        <div class="ex-box-title">🌅 Le matin</div>
+        <div class="ex-item"><div class="ex-pt">Eu acordo às 8h.</div><div class="ex-fr">→ Je me réveille à 8h.</div></div>
+        <div class="ex-item"><div class="ex-pt">Eu trabalho de manhã.</div><div class="ex-fr">→ Je travaille le matin.</div></div>
+      </div>
+      <div class="ex-box">
+        <div class="ex-box-title">🌆 L'après-midi & le soir</div>
+        <div class="ex-item"><div class="ex-pt">Eu estudo português todos os dias.</div><div class="ex-fr">→ J'étudie le portugais tous les jours.</div></div>
+        <div class="ex-item"><div class="ex-pt">Eu descanso à noite.</div><div class="ex-fr">→ Je me repose le soir.</div></div>
+      </div>
+    </div>
+
+    <div class="rev" style="margin-top:2rem">
+      <div class="ex-box-title">📅 Expressions de temps — à mémoriser !</div>
+      <div class="freq-grid">
+        <div class="freq-c"><div class="freq-pt">todos os dias</div><div class="freq-fr">tous les jours</div></div>
+        <div class="freq-c"><div class="freq-pt">de manhã</div><div class="freq-fr">le matin</div></div>
+        <div class="freq-c"><div class="freq-pt">à tarde</div><div class="freq-fr">l'après-midi</div></div>
+        <div class="freq-c"><div class="freq-pt">à noite</div><div class="freq-fr">le soir</div></div>
+        <div class="freq-c"><div class="freq-pt">sempre</div><div class="freq-fr">toujours</div></div>
+        <div class="freq-c"><div class="freq-pt">às vezes</div><div class="freq-fr">parfois</div></div>
+      </div>
+    </div>
+
+    <div class="exo-box rev">
+      <div class="exo-title">🎯 À ton tour !</div>
+      <div class="exo-items">
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">Je travaille le matin</span><span class="exo-a">→ Eu trabalho de manhã.</span><span class="exo-btn">👁 Révéler</span></div>
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">J'étudie tous les jours</span><span class="exo-a">→ Eu estudo todos os dias.</span><span class="exo-btn">👁 Révéler</span></div>
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">Je parle portugais le soir</span><span class="exo-a">→ Eu falo português à noite.</span><span class="exo-btn">👁 Révéler</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     LEÇON 3 — LES POSSESSIFS
+     ============================================= -->
+<section class="lesson-sec" id="lecon-3">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip">📚 Leçon 3</span></div>
+    <div class="rev">
+      <h2 class="s-title">Les possessifs — c'est à qui ? 🏠📖</h2>
+      <p class="s-sub">Tu veux dire "mon livre" ou "notre maison" en portugais ? Attention à une petite différence avec le français !</p>
+    </div>
+    <div class="warn-box rev"><span class="bi">🔥</span><p><strong>Erreur fréquente !</strong> En portugais, les possessifs s'accordent avec <strong>le nom qu'ils accompagnent</strong> (masculin/féminin), pas avec le possesseur. Contrairement au français !</p></div>
+
+    <div class="split-3 rev">
+      <div>
+        <div class="scroll-3d-wrap">
+          <div class="scroll-3d-card" data-scroll-3d>
+            <div style="padding:1.2rem">
+              <div class="ex-box-title">📋 Les possessifs essentiels</div>
+              <table class="conj-tbl">
+                <thead><tr><th>🇧🇷 Portugais</th><th>🇫🇷 Français</th></tr></thead>
+                <tbody>
+                  <tr><td>meu / minha</td><td>mon / ma</td></tr>
+                  <tr><td>teu / tua</td><td>ton / ta</td></tr>
+                  <tr><td>seu / sua</td><td>son / sa</td></tr>
+                  <tr><td>nosso / nossa</td><td>notre</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="info-box"><span class="bi">💡</span><p><strong>Astuce :</strong> Forme en <strong>-o</strong> devant un nom masculin, forme en <strong>-a</strong> devant un nom féminin.</p></div>
+      </div>
+      <div class="ex-box">
+        <div class="ex-box-title">👀 Exemples concrets</div>
+        <div class="ex-item"><div class="ex-pt">Meu livro 📖</div><div class="ex-fr">→ Mon livre (livro = masc. → meu)</div></div>
+        <div class="ex-item"><div class="ex-pt">Minha casa 🏠</div><div class="ex-fr">→ Ma maison (casa = fém. → minha)</div></div>
+        <div class="ex-item"><div class="ex-pt">Nosso professor 👨‍🏫</div><div class="ex-fr">→ Notre professeur</div></div>
+        <div class="ex-item"><div class="ex-pt">Nossa escola 🏫</div><div class="ex-fr">→ Notre école</div></div>
+        <div class="ex-item"><div class="ex-pt">Seu carro 🚗</div><div class="ex-fr">→ Sa voiture</div></div>
+        <div class="ex-item"><div class="ex-pt">Sua amiga 👩</div><div class="ex-fr">→ Son amie</div></div>
+      </div>
+    </div>
+
+    <div class="exo-box rev">
+      <div class="exo-title">🎯 À ton tour !</div>
+      <div class="exo-items">
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">Mon livre</span><span class="exo-a">→ Meu livro.</span><span class="exo-btn">👁 Révéler</span></div>
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">Notre maison</span><span class="exo-a">→ Nossa casa.</span><span class="exo-btn">👁 Révéler</span></div>
+        <div class="exo-item" onclick="reveal(this)"><span class="exo-q">Sa voiture</span><span class="exo-a">→ Seu carro.</span><span class="exo-btn">👁 Révéler</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     LEÇON 4 — PREMIER DIALOGUE
+     ============================================= -->
+<section class="lesson-sec lesson-alt" id="lecon-4">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip">📚 Leçon 4</span></div>
+    <div class="rev">
+      <h2 class="s-title">Ton premier dialogue en portugais ! 💬</h2>
+      <p class="s-sub">Une vraie conversation comme tu en auras en voyage ou avec un ami brésilien. Lis-la à voix haute pour t'entraîner !</p>
+    </div>
+
+    <div class="dial-wrap rev" id="dial-1">
+      <div class="brow"><div class="bav">👩</div><div class="bub"><div class="bub-pt">— Olá, tudo bem ? 👋</div><div class="bub-fr">Bonjour, ça va ?</div></div></div>
+      <div class="brow r"><div class="bav">👦</div><div class="bub"><div class="bub-pt">— Tudo bem, e você ? 😊</div><div class="bub-fr">Ça va bien, et toi ?</div></div></div>
+      <div class="brow"><div class="bav">👩</div><div class="bub"><div class="bub-pt">— Eu me chamo Maria. 👩</div><div class="bub-fr">Je m'appelle Maria.</div></div></div>
+      <div class="brow r"><div class="bav">👦</div><div class="bub"><div class="bub-pt">— Prazer, eu me chamo João. 👦</div><div class="bub-fr">Enchanté, je m'appelle João.</div></div></div>
+      <div class="brow"><div class="bav">👩</div><div class="bub"><div class="bub-pt">— De onde você é ? 🌍</div><div class="bub-fr">D'où viens-tu ?</div></div></div>
+      <div class="brow r"><div class="bav">👦</div><div class="bub"><div class="bub-pt">— Eu sou da França. 🇫🇷</div><div class="bub-fr">Je suis de France.</div></div></div>
+    </div>
+
+    <div class="rev" style="margin-top:2.2rem">
+      <div class="ex-box-title">📝 Vocabulaire clé — à retenir !</div>
+      <div class="vocab-grid">
+        <div class="vc"><div class="vc-pt">Olá 👋</div><div class="vc-fr">Bonjour</div></div>
+        <div class="vc"><div class="vc-pt">Tudo bem 😊</div><div class="vc-fr">Ça va</div></div>
+        <div class="vc"><div class="vc-pt">Prazer 🤝</div><div class="vc-fr">Enchanté(e)</div></div>
+        <div class="vc"><div class="vc-pt">De onde você é ?</div><div class="vc-fr">D'où viens-tu ?</div></div>
+        <div class="vc"><div class="vc-pt">Eu sou de...</div><div class="vc-fr">Je suis de...</div></div>
+        <div class="vc"><div class="vc-pt">Eu me chamo...</div><div class="vc-fr">Je m'appelle...</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     LEÇON 5 — PRONOMS RÉFLÉCHIS
+     ============================================= -->
+<section class="lesson-sec" id="lecon-5">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip" style="color:var(--gold);border-color:rgba(245,180,39,.22);background:var(--gold-dim)">🧠 Point de grammaire</span></div>
+    <div class="rev">
+      <h2 class="s-title">Les pronoms réfléchis — facile ! 🪞</h2>
+      <p class="s-sub">Les pronoms réfléchis indiquent que le sujet fait l'action sur lui-même. Tu les utilises très souvent dans la vie quotidienne — notamment pour te présenter !</p>
+    </div>
+
+    <div class="rev">
+      <div class="ex-box-title">👀 Exemples en situation réelle</div>
+      <div class="pex"><div class="pex-pt">Eu <span style="color:var(--teal);text-decoration:underline">me</span> chamo Maria.</div><div class="pex-fr">→ Je m'appelle Maria.</div></div>
+      <div class="pex"><div class="pex-pt">Ele <span style="color:var(--teal);text-decoration:underline">se</span> levanta cedo.</div><div class="pex-fr">→ Il se lève tôt.</div></div>
+      <div class="pex"><div class="pex-pt">Nós <span style="color:var(--teal);text-decoration:underline">nos</span> levantamos.</div><div class="pex-fr">→ Nous nous levons.</div></div>
+    </div>
+
+    <div class="info-box rev">
+      <span class="bi">💡</span>
+      <p><strong>À retenir :</strong> Au Brésil 🇧🇷, les pronoms se placent généralement <strong>avant le verbe</strong>. Au Portugal 🇵🇹, leur placement peut varier. Pas de panique — ça vient naturellement avec la pratique !</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     BONUS 1 — À RIO
+     ============================================= -->
+<section class="lesson-sec lesson-alt" id="lecon-6">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip" style="color:var(--green);border-color:rgba(0,214,107,.22);background:var(--green-dim)">🗺️ Bonus</span></div>
+    <div class="rev">
+      <h2 class="s-title">Tu es perdu à Rio. Et maintenant ? 🗺️</h2>
+      <p class="s-sub">Dialogue réel pour demander son chemin au Brésil. À lire à voix haute !</p>
+    </div>
+
+    <div class="split rev">
+      <div>
+        <div class="dial-wrap" id="dial-2">
+          <div class="brow"><div class="bav">👦</div><div class="bub"><div class="bub-pt">Oi! Você pode me ajudar?</div><div class="bub-fr">Salut ! Tu peux m'aider ?</div></div></div>
+          <div class="brow r"><div class="bav">👩</div><div class="bub"><div class="bub-pt">Claro! O que você precisa?</div><div class="bub-fr">Bien sûr ! De quoi as-tu besoin ?</div></div></div>
+          <div class="brow"><div class="bav">👦</div><div class="bub"><div class="bub-pt">Eu estou procurando o Cristo Redentor.</div><div class="bub-fr">Je cherche le Christ Rédempteur.</div></div></div>
+          <div class="brow r"><div class="bav">👩</div><div class="bub"><div class="bub-pt">Você continua reto, depois vira à direita!</div><div class="bub-fr">Continuez tout droit, puis tournez à droite !</div></div></div>
+        </div>
+        <div class="info-box" style="margin-top:1rem"><span class="bi">💡</span><p><strong>Astuce :</strong> <em>Estou procurando</em> = je suis en train de chercher. Au Brésil : <strong>estar + verbe en -ndo</strong> = action en cours.</p></div>
+      </div>
+      <div>
+        <div class="ex-box-title">🧭 Mots clés de direction</div>
+        <div class="vocab-grid" style="grid-template-columns:1fr 1fr">
+          <div class="vc"><div class="vc-pt">Siga reto</div><div class="vc-fr">Tout droit</div></div>
+          <div class="vc"><div class="vc-pt">Vire à esquerda</div><div class="vc-fr">Tournez à gauche</div></div>
+          <div class="vc"><div class="vc-pt">Vire à direita</div><div class="vc-fr">Tournez à droite</div></div>
+          <div class="vc"><div class="vc-pt">Onde fica... ?</div><div class="vc-fr">Où se trouve... ?</div></div>
+          <div class="vc"><div class="vc-pt">Eu estou perdido</div><div class="vc-fr">Je suis perdu</div></div>
+          <div class="vc"><div class="vc-pt">Vou de táxi</div><div class="vc-fr">J'y vais en taxi</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     BONUS 2 — EM NA NO
+     ============================================= -->
+<section class="lesson-sec" id="lecon-7">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip" style="color:var(--green);border-color:rgba(0,214,107,.22);background:var(--green-dim)">📌 Bonus</span></div>
+    <div class="rev">
+      <h2 class="s-title">"Dans ma chambre" — na, no ou em ? 📌</h2>
+      <p class="s-sub">La règle magique pour ne plus jamais se tromper avec les prépositions de lieu !</p>
+    </div>
+
+    <div class="scroll-3d-wrap rev">
+      <div class="scroll-3d-card" data-scroll-3d>
+        <div style="padding:1.4rem">
+          <table class="emna-tbl">
+            <thead><tr><th>🇫🇷 Français</th><th>Formule</th><th>🇧🇷 Portugais</th></tr></thead>
+            <tbody>
+              <tr><td>dans la maison</td><td>em + a casa</td><td>na casa</td></tr>
+              <tr><td>dans la voiture</td><td>em + o carro</td><td>no carro</td></tr>
+              <tr><td>dans mon école</td><td>em + a minha escola</td><td>na minha escola</td></tr>
+              <tr><td>dans sa chambre</td><td>em + o seu quarto</td><td>no seu quarto</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="hi-box rev">
+      <span class="bi">🔑</span>
+      <p><strong>La règle magique :</strong> Si tu peux dire <em>le / la / mon / ma</em> devant → utilise <strong>na / no</strong>. Sinon, garde <strong>em</strong> tout seul.<br><br>
+      Exemple : <span style="color:var(--gold)">em Portugal ✅</span> (pas d'article) — <span style="color:var(--green)">na França ✅</span> (la France)</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     BONUS 3 — FICAR
+     ============================================= -->
+<section class="lesson-sec lesson-alt" id="lecon-8">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip" style="color:var(--green);border-color:rgba(0,214,107,.22);background:var(--green-dim)">⚡ Bonus</span></div>
+    <div class="rev">
+      <h2 class="s-title">FICAR — le verbe que tout le monde traduit mal ⚡</h2>
+      <p class="s-sub">FICAR a 5 sens différents en portugais. C'est l'un des verbes les plus utilisés au Brésil !</p>
+    </div>
+    <div class="ficar-grid rev">
+      <div class="ficar-c"><div class="ficar-s">Rester</div><div class="ficar-pt">Eu fico em casa.</div><div class="ficar-fr">Je reste à la maison.</div></div>
+      <div class="ficar-c"><div class="ficar-s">Devenir</div><div class="ficar-pt">Fiquei feliz.</div><div class="ficar-fr">Je suis devenu heureux.</div></div>
+      <div class="ficar-c"><div class="ficar-s">Se trouver</div><div class="ficar-pt">O banco fica perto.</div><div class="ficar-fr">La banque se trouve près.</div></div>
+      <div class="ficar-c"><div class="ficar-s">Avoir (peur…)</div><div class="ficar-pt">Ele ficou com medo.</div><div class="ficar-fr">Il a eu peur.</div></div>
+      <div class="ficar-c"><div class="ficar-s">Garder</div><div class="ficar-pt">Ela ficou com o livro.</div><div class="ficar-fr">Elle a gardé le livre.</div></div>
+    </div>
+
+    <div class="rev" style="margin-top:1.8rem">
+      <div class="ex-box-title">🆚 SER vs ESTAR vs FICAR</div>
+      <div class="pex"><div class="pex-pt" style="color:var(--gold)">Ele é calmo.</div><div class="pex-fr">→ Caractère permanent (il est calme de nature)</div></div>
+      <div class="pex"><div class="pex-pt" style="color:var(--teal)">Ele está calmo.</div><div class="pex-fr">→ État temporaire (il est calme en ce moment)</div></div>
+      <div class="pex"><div class="pex-pt" style="color:var(--green)">Ele ficou calmo.</div><div class="pex-fr">→ Changement d'état (il s'est calmé)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     BONUS 4 — BRÉSIL VS PORTUGAL
+     ============================================= -->
+<section class="lesson-sec" id="lecon-9">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip" style="color:var(--green);border-color:rgba(0,214,107,.22);background:var(--green-dim)">🔀 Bonus</span></div>
+    <div class="rev">
+      <h2 class="s-title">Brésil 🇧🇷 vs Portugal 🇵🇹 — qui met le pronom où ? 🔀</h2>
+      <p class="s-sub">Une différence importante entre les deux variantes de la langue — et son histoire fascinante.</p>
+    </div>
+    <div class="bvsp rev">
+      <div class="bvsp-c br"><div class="bvsp-flag">🇧🇷</div><div class="bvsp-lbl">Brésil — Proclise</div><div class="bvsp-rule">Pronom <strong>AVANT</strong> le verbe</div><div class="bvsp-ex">Não me diga!<br><small style="color:var(--muted);font-weight:400">(Ne me dis pas !)</small></div></div>
+      <div class="bvsp-c pt"><div class="bvsp-flag">🇵🇹</div><div class="bvsp-lbl">Portugal — Enclise</div><div class="bvsp-rule">Pronom <strong>APRÈS</strong> le verbe</div><div class="bvsp-ex">Diga-me!<br><small style="color:var(--muted);font-weight:400">(Dis-moi !)</small></div></div>
+    </div>
+    <div class="info-box rev">
+      <span class="bi">📚</span>
+      <p><strong>L'histoire :</strong> La proclise vient du Portugal original. Les colons l'ont amenée au Brésil lors des Grandes Découvertes. Le Portugal a ensuite évolué vers l'enclise — le Brésil a gardé l'ancienne forme. <strong>Les deux sont correctes !</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     BONUS 5 — FRÉQUENCE
+     ============================================= -->
+<section class="lesson-sec lesson-alt" id="lecon-10">
+  <div class="wrapper">
+    <div class="rev"><span class="lesson-chip" style="color:var(--green);border-color:rgba(0,214,107,.22);background:var(--green-dim)">📅 Bonus</span></div>
+    <div class="rev">
+      <h2 class="s-title">Parle de ta vie en portugais. Maintenant. 📅</h2>
+      <p class="s-sub">Les adverbes de fréquence pour décrire ta routine avec précision dès les premiers jours !</p>
+    </div>
+    <div class="freq-grid rev">
+      <div class="freq-c"><div class="freq-pt">sempre</div><div class="freq-fr">toujours</div></div>
+      <div class="freq-c"><div class="freq-pt">nunca</div><div class="freq-fr">jamais</div></div>
+      <div class="freq-c"><div class="freq-pt">às vezes</div><div class="freq-fr">parfois</div></div>
+      <div class="freq-c"><div class="freq-pt">de vez em quando</div><div class="freq-fr">de temps en temps</div></div>
+      <div class="freq-c"><div class="freq-pt">frequentemente</div><div class="freq-fr">fréquemment</div></div>
+      <div class="freq-c"><div class="freq-pt">raramente</div><div class="freq-fr">rarement</div></div>
+    </div>
+
+    <div class="ex-box rev" style="margin-top:1.5rem">
+      <div class="ex-box-title">🎯 En situation réelle</div>
+      <div class="ex-item"><div class="ex-pt">Eu <strong>sempre</strong> estudo à noite.</div><div class="ex-fr">→ J'étudie toujours le soir.</div></div>
+      <div class="ex-item"><div class="ex-pt">Ela <strong>nunca</strong> fuma.</div><div class="ex-fr">→ Elle ne fume jamais.</div></div>
+      <div class="ex-item"><div class="ex-pt">Eu como pizza <strong>às vezes</strong>.</div><div class="ex-fr">→ Je mange de la pizza parfois.</div></div>
+      <div class="ex-item"><div class="ex-pt"><strong>De vez em quando</strong>, eu corro.</div><div class="ex-fr">→ De temps en temps, je cours.</div></div>
+    </div>
+    <div class="info-box rev"><span class="bi">📍</span><p><strong>Règle de placement :</strong> Mots courts (<em>sempre, nunca</em>) → juste <strong>avant</strong> le verbe. Mots longs (<em>de vez em quando</em>) → <strong>début ou fin</strong> de phrase.</p></div>
+  </div>
+</section>
+
+<!-- =============================================
+     QUIZ
+     ============================================= -->
+<section class="quiz-bg" id="quiz">
+  <div class="wrapper">
+    <div class="rev tc">
+      <span class="s-label">⚡ Teste-toi !</span>
+      <h2 class="s-title">Tu as bien suivi ? 🧠</h2>
+      <p class="s-sub">5 questions pour valider tes acquis. Es-tu prêt(e) ?</p>
+    </div>
+    <div class="quiz-wrap">
+      <div class="qprog-bar"><div class="qprog-fill" id="qpfill"></div></div>
+
+      <div class="q-card act" id="q1">
+        <div class="q-num">Question 1 / 5</div>
+        <div class="q-txt">Comment dit-on "nous parlons" en portugais ?</div>
+        <div class="q-opts">
+          <button class="q-opt" onclick="check(this,false,'q1')">nós falais</button>
+          <button class="q-opt" onclick="check(this,true,'q1')">nós falamos</button>
+          <button class="q-opt" onclick="check(this,false,'q1')">nós falam</button>
+          <button class="q-opt" onclick="check(this,false,'q1')">eu falamos</button>
+        </div>
+        <div class="q-fb"></div>
+      </div>
+
+      <div class="q-card" id="q2">
+        <div class="q-num">Question 2 / 5</div>
+        <div class="q-txt">Comment dit-on "dans ma chambre" en portugais ?</div>
+        <div class="q-opts">
+          <button class="q-opt" onclick="check(this,false,'q2')">em minha quarto</button>
+          <button class="q-opt" onclick="check(this,true,'q2')">no meu quarto</button>
+          <button class="q-opt" onclick="check(this,false,'q2')">na meu quarto</button>
+          <button class="q-opt" onclick="check(this,false,'q2')">em o quarto</button>
+        </div>
+        <div class="q-fb"></div>
+      </div>
+
+      <div class="q-card" id="q3">
+        <div class="q-num">Question 3 / 5</div>
+        <div class="q-txt">Que signifie "Fiquei com medo" ?</div>
+        <div class="q-opts">
+          <button class="q-opt" onclick="check(this,false,'q3')">Je suis resté avec peur</button>
+          <button class="q-opt" onclick="check(this,true,'q3')">J'ai eu peur</button>
+          <button class="q-opt" onclick="check(this,false,'q3')">J'ai peur</button>
+          <button class="q-opt" onclick="check(this,false,'q3')">Je suis courageux</button>
+        </div>
+        <div class="q-fb"></div>
+      </div>
+
+      <div class="q-card" id="q4">
+        <div class="q-num">Question 4 / 5</div>
+        <div class="q-txt">Au Brésil, où se place généralement le pronom réfléchi ?</div>
+        <div class="q-opts">
+          <button class="q-opt" onclick="check(this,false,'q4')">Après le verbe</button>
+          <button class="q-opt" onclick="check(this,true,'q4')">Avant le verbe</button>
+          <button class="q-opt" onclick="check(this,false,'q4')">À la fin de la phrase</button>
+          <button class="q-opt" onclick="check(this,false,'q4')">N'importe où</button>
+        </div>
+        <div class="q-fb"></div>
+      </div>
+
+      <div class="q-card" id="q5">
+        <div class="q-num">Question 5 / 5</div>
+        <div class="q-txt">Comment dit-on "ma maison" en portugais ?</div>
+        <div class="q-opts">
+          <button class="q-opt" onclick="check(this,false,'q5')">meu casa</button>
+          <button class="q-opt" onclick="check(this,false,'q5')">nossa casa</button>
+          <button class="q-opt" onclick="check(this,true,'q5')">minha casa</button>
+          <button class="q-opt" onclick="check(this,false,'q5')">minha carro</button>
+        </div>
+        <div class="q-fb"></div>
+      </div>
+
+      <div class="score-wrap" id="qscore">
+        <div class="score-n" id="scoren">0/5</div>
+        <div class="score-msg" id="scoremsg">Résultat</div>
+        <a href="https://linktr.ee/methodeluiza" target="_blank" class="btn-p" style="display:inline-flex;margin-top:1rem">🚀 Accéder à la formation complète</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     CTA FINAL
+     ============================================= -->
+<section class="cta-sec">
+  <div class="wrapper">
+    <div class="cta-glow"></div>
+    <div class="cta-inner rev tc">
+      <span class="s-label" style="margin-bottom:1.2rem;display:inline-flex">🚀 Et maintenant ?</span>
+      <h2 class="s-title">Continue ton aventure<br>en portugais ! 🎉</h2>
+      <p class="s-sub" style="margin:0 auto 2.2rem">Tu viens de terminer le guide gratuit. Tu as les bases. Maintenant il faut construire dessus — avec la méthode complète de Luiza.</p>
+
+      <div class="cta-features">
+        <div class="cta-feat"><span class="cta-feat-ico">🎬</span><h3>Vidéos explicatives</h3><p>Apprends à ton rythme, où que tu sois.</p></div>
+        <div class="cta-feat"><span class="cta-feat-ico">✍️</span><h3>Exercices progressifs</h3><p>De la pratique réelle à chaque leçon.</p></div>
+        <div class="cta-feat"><span class="cta-feat-ico">💬</span><h3>Dialogues du quotidien</h3><p>Resto, transports, rencontres…</p></div>
+        <div class="cta-feat"><span class="cta-feat-ico">📖</span><h3>Grammaire sans prise de tête</h3><p>Que l'essentiel, simple et direct.</p></div>
+      </div>
+
+      <a href="https://linktr.ee/methodeluiza" target="_blank" class="cta-big">🚀 Rejoindre la formation de Luiza Silva →</a>
+
+      <div class="cta-bullets">
+        <span class="cta-bull"><span class="ck">✅</span> Méthode approuvée</span>
+        <span class="cta-bull"><span class="ck">✅</span> Résultats en 1 mois</span>
+        <span class="cta-bull"><span class="ck">✅</span> 15 min par jour suffisent</span>
+        <span class="cta-bull"><span class="ck">✅</span> Vraies conversations</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>🇧🇷 <strong>Méthode Luiza</strong> — Guide gratuit par Luiza Silva, Professeure de Portugais</p>
+  <p style="margin-top:.5rem">Rejoins la communauté → <a href="https://linktr.ee/methodeluiza" target="_blank">Linktree @methodeluiza</a></p>
+</footer>
+
+<!-- =============================================
+     JAVASCRIPT
+     ============================================= -->
+<script>
+/* ======== STARS CANVAS ======== */
+(function(){
+  const c=document.getElementById('stars-canvas');
+  const ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
+  function mkStars(){
+    stars=[];
+    for(let i=0;i<220;i++){
+      stars.push({
+        x:Math.random()*W,y:Math.random()*H,
+        r:Math.random()*1.3+.2,
+        a:Math.random()*.9+.1,
+        spd:Math.random()*.25+.05,
+        phase:Math.random()*Math.PI*2,
+        freq:Math.random()*.02+.008,
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.phase+=s.freq;
+      const alpha=s.a*(0.45+0.55*Math.sin(s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(200,218,255,${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();mkStars()});
+  resize();mkStars();draw();
+})();
+
+/* ======== SCROLL PROGRESS ======== */
+window.addEventListener('scroll',()=>{
+  const st=window.scrollY;
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('prog').style.width=(st/dh*100)+'%';
+});
+
+/* ======== REVEAL ON SCROLL ======== */
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+},{threshold:.08});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+
+/* ======== COUNTER ANIMATION ======== */
+const co=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    const tgt=parseInt(el.dataset.target);
+    if(!tgt)return;
+    let start=null;
+    const dur=2200;
+    function step(now){
+      if(!start)start=now;
+      const p=Math.min((now-start)/dur,1);
+      const ease=1-Math.pow(1-p,3);
+      el.textContent=Math.round(ease*tgt)+'M';
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+    co.unobserve(el);
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>co.observe(el));
+
+/* ======== ORBITAL NAVIGATOR ======== */
+const mods=[
+  {id:'lecon-1',lbl:'Le Présent',ico:'⚡'},
+  {id:'lecon-2',lbl:'La Routine',ico:'☀️'},
+  {id:'lecon-3',lbl:'Possessifs',ico:'🏠'},
+  {id:'lecon-4',lbl:'Dialogue',ico:'💬'},
+  {id:'lecon-5',lbl:'Pronoms',ico:'🪞'},
+  {id:'lecon-6',lbl:'À Rio',ico:'🗺️'},
+  {id:'lecon-7',lbl:'Em/Na/No',ico:'📌'},
+  {id:'lecon-8',lbl:'FICAR',ico:'⚡'},
+  {id:'lecon-9',lbl:'BR vs PT',ico:'🔀'},
+  {id:'lecon-10',lbl:'Fréquence',ico:'📅'},
+];
+const container=document.getElementById('orb-nodes');
+let orbAngle=0,orbNodes=[];
+
+function buildOrb(){
+  container.innerHTML='';
+  orbNodes=[];
+  const isMob=window.innerWidth<600;
+  const R=isMob?130:175;
+  mods.forEach((m,i)=>{
+    const n=document.createElement('div');
+    n.className='orb-node';
+    n.innerHTML=`<div class="orb-node-ico">${m.ico}</div><div class="orb-node-lbl">${m.lbl}</div>`;
+    n.addEventListener('click',()=>{
+      const t=document.getElementById(m.id);
+      if(t)t.scrollIntoView({behavior:'smooth'});
+    });
+    container.appendChild(n);
+    orbNodes.push({el:n,i,R});
+  });
+}
+
+function tickOrb(){
+  const total=orbNodes.length;
+  orbNodes.forEach(({el,i,R})=>{
+    const angle=((i/total)*360+orbAngle)%360;
+    const rad=angle*Math.PI/180;
+    const x=R*Math.cos(rad);
+    const y=R*Math.sin(rad);
+    const z=50+30*Math.cos(rad);
+    const op=Math.max(.3,Math.min(1,.3+.7*((1+Math.sin(rad))/2)));
+    el.style.transform=`translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+    el.style.zIndex=Math.round(z);
+    el.style.opacity=op;
+  });
+  orbAngle=(orbAngle+.18)%360;
+  requestAnimationFrame(tickOrb);
+}
+
+buildOrb();
+tickOrb();
+window.addEventListener('resize',buildOrb);
+
+/* ======== DIALOGUE BUBBLE ANIMATION ======== */
+function animDial(id){
+  const wrap=document.getElementById(id);
+  if(!wrap)return;
+  wrap.querySelectorAll('.bub').forEach((b,i)=>{
+    setTimeout(()=>b.classList.add('vis'),i*420);
+  });
+}
+const dobs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){animDial(e.target.id);dobs.unobserve(e.target);}
+  });
+},{threshold:.2});
+document.querySelectorAll('.dial-wrap').forEach(el=>dobs.observe(el));
+
+/* ======== EXERCISE REVEAL ======== */
+function reveal(el){
+  const q=el.querySelector('.exo-q');
+  const a=el.querySelector('.exo-a');
+  const btn=el.querySelector('.exo-btn');
+  if(a.style.display!=='inline'){
+    a.style.display='inline';
+    q.style.display='none';
+    btn.textContent='✅';
+    el.style.borderColor='rgba(0,214,107,.35)';
+    el.style.background='rgba(0,214,107,.05)';
+    el.style.cursor='default';
+  }
+}
+
+/* ======== SCROLL 3D CARD (ContainerScroll inspired) ======== */
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('[data-scroll-3d]').forEach(card=>{
+    const rect=card.getBoundingClientRect();
+    const cy=rect.top+rect.height/2;
+    const vc=window.innerHeight/2;
+    const dist=(cy-vc)/window.innerHeight;
+    const rx=Math.max(-12,Math.min(12,dist*18));
+    card.style.transform=`rotateX(${rx}deg)`;
+  });
+});
+
+/* ======== QUIZ ======== */
+let qScore=0,qCurrent=1,qTotal=5;
+
+function check(btn,correct,qid){
+  const card=document.getElementById(qid);
+  const opts=card.querySelectorAll('.q-opt');
+  const fb=card.querySelector('.q-fb');
+  opts.forEach(o=>o.disabled=true);
+
+  if(correct){
+    btn.classList.add('ok');
+    qScore++;
+    fb.textContent='✅ Excellent ! C\'est la bonne réponse !';
+    fb.className='q-fb ok-fb';
+  } else {
+    btn.classList.add('no');
+    opts.forEach(o=>{if(o.onclick.toString().includes('true'))o.classList.add('ok')});
+    fb.textContent='❌ Pas tout à fait… Relis la leçon correspondante !';
+    fb.className='q-fb no-fb';
+  }
+
+  const pct=(qCurrent/qTotal)*100;
+  document.getElementById('qpfill').style.width=pct+'%';
+
+  setTimeout(()=>{
+    if(qCurrent<qTotal){
+      card.classList.remove('act');
+      qCurrent++;
+      document.getElementById('q'+qCurrent).classList.add('act');
+    } else {
+      card.classList.remove('act');
+      showScore();
+    }
+  },1900);
+}
+
+function showScore(){
+  document.getElementById('qpfill').style.width='100%';
+  const sw=document.getElementById('qscore');
+  sw.classList.add('vis');
+  document.getElementById('scoren').textContent=qScore+'/5';
+  let msg='';
+  if(qScore===5)msg='🏆 Parfait ! Tu es prêt(e) pour la formation complète !';
+  else if(qScore>=3)msg='👏 Bien joué ! Tu as de bonnes bases. Continue !';
+  else msg='💪 Continue à pratiquer — tu vas y arriver !';
+  document.getElementById('scoremsg').textContent=msg;
+  if(qScore>=3)confetti();
+}
+
+/* ======== CONFETTI ======== */
+function confetti(){
+  const colors=['#F5B427','#00D66B','#FF5E5E','#38C8C8','#9B6FE8','#fff'];
+  const style=document.createElement('style');
+  style.textContent=`@keyframes cffall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}`;
+  document.head.appendChild(style);
+  for(let i=0;i<90;i++){
+    const d=document.createElement('div');
+    const sz=Math.random()*8+4;
+    d.style.cssText=`
+      position:fixed;top:-12px;left:${Math.random()*100}vw;
+      width:${sz}px;height:${sz}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>.5?'50%':'2px'};z-index:9998;
+      animation:cffall ${Math.random()*2+2}s linear ${Math.random()*.8}s forwards;
+      transform:rotate(${Math.random()*360}deg);pointer-events:none;
+    `;
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(),4500);
+  }
+}
+</script>
+</body>
+</html>
